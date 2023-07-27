@@ -1,6 +1,6 @@
-# SPDX-FileCopyrightText: 2023 Jade Lovelace
-#
-# SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2023 Jade Lovelace
+//
+// SPDX-License-Identifier: MIT
 
 #import "algorithmic.typ"
 #let algorithm = algorithmic.algorithm
