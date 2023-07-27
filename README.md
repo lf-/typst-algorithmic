@@ -23,7 +23,7 @@ Example:
 #algorithm({
   import algorithmic: *
   Function("Binary-Search", args: ("A", "n", "v"), {
-    Ic[Initialize the search range]
+    Cmt[Initialize the search range]
     Assign[$l$][$1$]
     Assign[$r$][$n$]
     State[]
