@@ -17,8 +17,8 @@ indentation, bolded keywords, and such](./docs/assets/demo-rendered.png)
 Example:
 
 ```typst
-#import "algorithmic.typ"
-#let algorithm = algorithmic.algorithm
+#import "@preview/algorithmic:0.1.0"
+#import algorithmic: algorithm
 
 #algorithm({
   import algorithmic: *

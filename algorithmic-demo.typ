@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 #import "algorithmic.typ"
-#let algorithm = algorithmic.algorithm
+#import algorithmic: algorithm
 
 #algorithm({
   import algorithmic: *
