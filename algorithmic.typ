@@ -43,17 +43,17 @@
     (change_indent: 4, body: body.pos())
 )
 
-#let function_like(name, kw: "function", args: (), ..body) = (
-    iflike_block(kw1: kw, cond: (smallcaps(name) + "(" + args.join(", ") + ")"), ..body)
-)
-
-#let listify(v) = {
-    if type(v) == "list" {
+#let arraify(v) = {
+    if type(v) == "array" {
         v
     } else {
         (v,)
     }
 }
+
+#let function_like(name, kw: "function", args: (), ..body) = (
+    iflike_block(kw1: kw, cond: (smallcaps(name) + "(" + arraify(args).join(", ") + ")"), ..body)
+)
 
 #let Function = function_like.with(kw: "function")
 #let Procedure = function_like.with(kw: "procedure")
@@ -61,9 +61,9 @@
 #let State(block) = ((body: block),)
 
 /// Inline call
-#let CallI(name, args) = smallcaps(name) + "(" + listify(args).join(", ") + ")"
+#let CallI(name, args) = smallcaps(name) + "(" + arraify(args).join(", ") + ")"
 #let Call(..args) = (CallI(..args),)
-#let FnI(f, args) = strong(f) + " (" + listify(args).join(", ") + ")"
+#let FnI(f, args) = strong(f) + " (" + arraify(args).join(", ") + ")"
 #let Fn(..args) = (FnI(..args),)
 #let Ic(c) = sym.triangle.stroked.r + " " + c
 #let Cmt(c) = (Ic(c),)
