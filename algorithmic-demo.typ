@@ -9,7 +9,7 @@
   import algorithmic: *
   Function("Binary-Search", args: ("A", "n", "v"), {
     Cmt[Initialize the search range]
-    Assign[$l$][$1$]
+    Tc(AssignI[$l$][$1$])[comment comment comment did you know i cannot write tersely this is a long comment that goes on forever]
     Assign[$r$][$n$]
     State[]
     While(cond: $l <= r$, {

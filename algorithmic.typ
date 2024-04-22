@@ -7,14 +7,18 @@
  * (change_indent: int, body: ((ast | content)[] | content | ast)
  */
 
-#let ast_to_content_list(indent, ast) = {
+#let render_content(indent, content) = {
+    pad(left: indent * 0.5em, content)
+}
+
+#let ast_to_content_list(indent, ast, meta: (:)) = {
     if type(ast) == "array" {
-        ast.map(d => ast_to_content_list(indent, d))
+        ast.map(d => ast_to_content_list(indent, d, meta: meta))
     } else if type(ast) == "content" {
-        (pad(left: indent * 0.5em, ast),)
+        ((content: render_content(indent, ast)) + meta,)
     } else if type(ast) == "dictionary" {
         let new_indent = ast.at("change_indent", default: 0) + indent
-        ast_to_content_list(new_indent, ast.body)
+        ast_to_content_list(new_indent, ast.body, meta: ast.at("meta", default: (:)))
     }
 }
 
@@ -25,11 +29,12 @@
 
     while lineno <= content.len() {
         table_bits.push([#lineno:])
-        table_bits.push(content.at(lineno - 1))
+        table_bits.push(content.at(lineno - 1).content)
+        table_bits.push(content.at(lineno - 1).at("comment", default: []))
         lineno = lineno + 1
     }
     table(
-        columns: (18pt, 100%),
+        columns: (18pt, 70%, 30%),
         // line spacing
         inset: 0.3em,
         stroke: none,
@@ -67,11 +72,17 @@
 #let Fn(..args) = (FnI(..args),)
 #let Ic(c) = sym.triangle.stroked.r + " " + c
 #let Cmt(c) = (Ic(c),)
+// Trailing comment
+#let Tc(line, c) = {
+    assert.eq(type(line), "content", message: "Line of inline comment was not of type Content, but was " + type(line) + ", so it may span multiple lines. Use one of the 'I' functions to make an inline thing instead")
+    ((body: line, meta: (comment: Ic(c))),)
+}
 // It kind of sucks that Else is a separate block but it's fine
 #let If = iflike_block.with(kw1: "if", kw2: "then")
 #let While = iflike_block.with(kw1: "while", kw2: "do")
 #let For = iflike_block.with(kw1: "for", kw2: "do")
-#let Assign(var, val) = (var + " " + $<-$ + " " + val,)
+#let AssignI(var, val) = var + " " + $<-$ + " " + val
+#let Assign(var, val) = (AssignI(var, val),)
 
 #let Else = iflike_block.with(kw1: "else")
 #let ElsIf = iflike_block.with(kw1: "else if", kw2: "then")
